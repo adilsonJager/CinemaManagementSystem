@@ -25,6 +25,12 @@ The system includes the following main entities:
 - **Users** - Customer registration and authentication
 - **Managers** - Administrative profile
 
+## 🗄️ Database Schema
+
+
+<img src="assets/dbDiagrama.png" alt="Diagrama do Cinema" width="1572">
+
+
 ## 🗺️ Execution Plan
 
 ### Phase 1: Structure and Initial Data

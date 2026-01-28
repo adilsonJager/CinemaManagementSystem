@@ -4,10 +4,10 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Mov
 
 import java.util.List;
 
-public interface MoviesServiceCore {
+public interface MovieContract {
 
     MovieResponseDto getMovieById(int id);
 
-    List<MovieResponseDto> getAllMovies(int id);
+    List<MovieResponseDto> getAllMovies();
 
 }

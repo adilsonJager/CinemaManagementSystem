@@ -2,7 +2,7 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.servic
 
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.MovieNotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.MovieResponseDto;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.Movie;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.MovieEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.MovieRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,7 +31,7 @@ class MovieServiceTest {
     void ShouldBeGetMovieWhenIdExists() {
         //Arrange
         int id = 1;
-        Movie movieFake = new Movie(id, "Inception",154);
+        MovieEntity movieFake = new MovieEntity(id, "Inception",154);
         when (repository.findById(id)).thenReturn(Optional.of(movieFake));
 
         //Action
@@ -55,6 +57,21 @@ class MovieServiceTest {
     }
 
     @Test
+    @DisplayName("Should return a list of movies")
     void getAllMovies() {
+        MovieEntity m1 = new MovieEntity(1, "movie 1", 110);
+        MovieEntity m2 = new MovieEntity(2, "movie 2", 120);
+        MovieEntity m3 = new MovieEntity(3, "movie 3", 130);
+        when(repository.findAll()).thenReturn(List.of(m1, m2, m3));
+        List<MovieResponseDto> result = service.getAllMovies();
+
+
+
+        assertAll(
+                () ->  assertEquals(3, result.size()),
+                () -> assertEquals("movie 3", result.get(2).title()),
+                () ->  assertEquals(120, result.get(1).time())
+        );
+        verify(repository, times(1)).findAll();
     }
 }

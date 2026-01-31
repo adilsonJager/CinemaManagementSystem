@@ -13,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movie")
-public class MoviesControllers {
+public class MoviesController {
 
 
     private final MovieService service;
 
-    public MoviesControllers(MovieService service) {
+    public MoviesController(MovieService service) {
         this.service = service;
     }
 

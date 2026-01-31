@@ -3,9 +3,8 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.servic
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.RoomResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.RoomEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.RoomName;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.MovieRepository;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.RoomRespository;
-import org.hibernate.sql.ast.tree.expression.CaseSimpleExpression;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,6 +46,14 @@ class RoomServiceTest {
     }
 
     @Test
+    @DisplayName("Should get RunTimeException if room not exist")
+    void getRunTimeExceptionRoomNotExists(){
+        when(repository.findByName(RoomName.A.name())).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> service.getRoom(RoomName.A));
+    }
+
+    @Test
+    @DisplayName("Should get a list of rooms")
     void getAllRoom() {
 
         RoomEntity r1 = new RoomEntity(1, "A", 100);
@@ -59,7 +66,8 @@ class RoomServiceTest {
         assertAll(
                 () -> assertEquals(1, result.get(0).id()),
                 () -> assertEquals("B", result.get(1).name()),
-                () -> assertEquals(300, result.get(2).capacity())
+                () -> assertEquals(300, result.get(2).capacity()),
+                () -> assertEquals(3, result.size())
         );
 
         verify(repository, times(1)).findAll();

@@ -1,6 +1,5 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;
-
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.MovieNotFoundException;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.MovieResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.MovieEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.MovieRepository;
@@ -46,13 +45,13 @@ class MovieServiceTest {
 
 
     @Test
-    @DisplayName("Should throw MovieNotFoundException when movie ID does not exist")
+    @DisplayName("Should throw NotFoundException when movie ID does not exist")
     void getRunTimeException(){
         int id = 99;
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         //Action
-        assertThrows(MovieNotFoundException.class, () -> service.getMovieById(id));
+        assertThrows(NotFoundException.class, () -> service.getMovieById(id));
 
     }
 

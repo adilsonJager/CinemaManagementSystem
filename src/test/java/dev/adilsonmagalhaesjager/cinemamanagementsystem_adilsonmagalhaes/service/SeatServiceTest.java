@@ -1,9 +1,9 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.ISeatProjection;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.SeatResponseDTO;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.StatusSeat;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ISeatProjection;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.SeatResponseDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.StatusSeat;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.SeatRepository;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ShowtimeRespository;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ShowtimeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,8 @@ class SeatServiceTest {
     @Mock
     private SeatRepository repository;
 
-    @Mock ShowtimeRespository showtimeRespository;
+    @Mock
+    ShowtimeRepository showtimeRepository;
 
     @InjectMocks
     private SeatService service;
@@ -40,7 +41,7 @@ class SeatServiceTest {
         when (repository.findSeatsByShowTimeWithStatus(1)).thenReturn(List.of(s1, s2, s3));
 
 
-        List<SeatResponseDTO> result = this.service.getAllSeatFromShowtime(1);
+        List<SeatResponseDto> result = this.service.getAllSeatFromShowtime(1);
 
         assertAll(
                 () -> assertNotNull(result),
@@ -58,7 +59,7 @@ class SeatServiceTest {
     @Test
     @DisplayName("Should throw RunTimeException when showtime ID does not exist")
     void getRunTimeException(){
-        when(showtimeRespository.existsById(999)).thenReturn(false);
+        when(showtimeRepository.existsById(999)).thenReturn(false);
         assertThrows(RuntimeException.class, () -> service.getAllSeatFromShowtime(999));
     }
 

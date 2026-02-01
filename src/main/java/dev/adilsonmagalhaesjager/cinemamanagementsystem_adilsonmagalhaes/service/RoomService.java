@@ -2,8 +2,8 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.servic
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.RoomContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.RoomResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.RoomEntity;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.RoomName;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.RoomRespository;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.RoomName;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 public class RoomService implements RoomContract {
 
-    private final RoomRespository respository;
+    private final RoomRepository respository;
 
 
-    public RoomService(RoomRespository respository) {
+    public RoomService(RoomRepository respository) {
         this.respository = respository;
     }
 
@@ -36,12 +36,11 @@ public class RoomService implements RoomContract {
 
         return respository.findAll().stream().map(
                 entity -> {
-                    RoomResponseDto dto = new RoomResponseDto(
+                    return new RoomResponseDto(
                             entity.getId(),
                             entity.getName(),
                             entity.getCapacity()
                     );
-                    return dto;
                 }
         ).toList();
 

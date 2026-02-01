@@ -1,6 +1,5 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository;
 
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.ISeatProjection;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.SeatEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

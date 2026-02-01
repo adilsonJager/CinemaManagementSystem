@@ -1,5 +1,5 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.MovieNotFoundException;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.MovieContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.MovieResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.MovieEntity;
@@ -19,7 +19,7 @@ public class MovieService implements MovieContract {
 
     @Override
     public MovieResponseDto getMovieById(int id) {
-        MovieEntity movie = repository.findById(id).orElseThrow(() -> MovieNotFoundException.movieNotFound("error"));
+        MovieEntity movie = repository.findById(id).orElseThrow(() -> NotFoundException.movieNotFound("error"));
         return new MovieResponseDto(movie.getId(), movie.getTitle(), movie.getTime());
     }
 

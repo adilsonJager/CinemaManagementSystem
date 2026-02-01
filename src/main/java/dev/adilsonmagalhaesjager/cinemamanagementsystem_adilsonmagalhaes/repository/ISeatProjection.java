@@ -1,4 +1,4 @@
-package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto;
+package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository;
 
 public interface ISeatProjection {
     int getId();

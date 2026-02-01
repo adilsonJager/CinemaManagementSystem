@@ -1,6 +1,7 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.controllers;
 
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.SeatResponseDTO;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.SeatContract;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.SeatResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service.SeatService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,14 @@ import java.util.List;
 @RequestMapping("/seat")
 public class SeatController {
 
-    private final SeatService service;
+    private final SeatContract service;
 
-    public SeatController(SeatService seatService) {
+    public SeatController(SeatContract seatService) {
         this.service = seatService;
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<List<SeatResponseDTO>> getAllSeatByShowtime(@PathVariable @Valid int id) {
+    public ResponseEntity<List<SeatResponseDto>> getAllSeatByShowtime(@PathVariable @Valid int id) {
 
         return ResponseEntity.ok().body(service.getAllSeatFromShowtime(id));
 

@@ -1,4 +1,4 @@
-package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto;
+package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums;
 
 public enum StatusSeat {
     Available("Available"),

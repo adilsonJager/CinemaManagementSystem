@@ -1,11 +1,10 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core;
 
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.SeatResponseDTO;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.SeatResponseDto;
 
 import java.util.List;
 
 public interface SeatContract {
 
-    List<SeatResponseDTO> getAllSeatFromShowtime(int id);
-
+    List<SeatResponseDto> getAllSeatFromShowtime(int id);
 }

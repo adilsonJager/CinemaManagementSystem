@@ -1,4 +1,4 @@
-package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model;
+package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums;
 
 public enum RoomName {
     A("A"),

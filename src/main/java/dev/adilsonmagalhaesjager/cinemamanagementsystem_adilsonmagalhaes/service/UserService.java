@@ -21,10 +21,16 @@ public class UserService implements UsersContract {
 
     @Override
     public UserResponseDto getUserById(int id) {
-
         UserEntity user = repository.findById(id).orElseThrow(() -> NotFoundException.userNotExists(id));
         return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
+    }
 
+
+    @Override
+    public UserResponseDto getUserByEmail(String email){
+        return repository.findByEmail(email).map(
+                e -> new UserResponseDto(e.getId(), e.getName(), e.getEmail())
+        ).orElseThrow(() -> NotFoundException.userEmailNotExists(email));
     }
 
     @Override
@@ -34,10 +40,12 @@ public class UserService implements UsersContract {
             throw ConflictRunTimeException.emailAlredyExist(dto.email());
         }
 
-        UserEntity user = new UserEntity();
-        user.setEmail(dto.email());
-        user.setName(dto.name());
-        user.setPassword(dto.password());
+        UserEntity user = UserEntity.builder()
+                .name(dto.name())
+                .email(dto.email())
+                .password(dto.password())
+                .build();
+
         UserEntity saveUser = repository.save(user);
         return new UserResponseDto(saveUser.getId(), saveUser.getName(), saveUser.getEmail());
 

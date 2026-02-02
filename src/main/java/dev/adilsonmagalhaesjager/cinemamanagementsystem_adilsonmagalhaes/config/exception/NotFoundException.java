@@ -27,4 +27,8 @@ public class NotFoundException extends  RuntimeException{
         return new NotFoundException("User not exist! id: " + s);
     }
 
+    public static NotFoundException userEmailNotExists(String s) {
+        return new NotFoundException("User not exist! Email: " + s);
+    }
+
 }

@@ -1,10 +1,7 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 @Entity(name = "users")
 @Table(name = "users")
+@Builder
 
 public class UserEntity {
     @Id

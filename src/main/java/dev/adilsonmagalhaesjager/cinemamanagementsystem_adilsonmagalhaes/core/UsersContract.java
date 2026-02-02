@@ -6,5 +6,6 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Use
 public interface UsersContract {
     UserResponseDto getUserById(int id);
     UserResponseDto createUser(UserRequestDto dto);
+    UserResponseDto getUserByEmail(String email);
 
 }

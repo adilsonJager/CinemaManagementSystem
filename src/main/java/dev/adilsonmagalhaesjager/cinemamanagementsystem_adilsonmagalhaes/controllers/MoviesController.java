@@ -27,7 +27,7 @@ public class MoviesController {
         return ResponseEntity.ok().body(this.service.getAllMovies());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<MovieResponseDto> getMovieById(@Valid @PathVariable Integer id){
         return ResponseEntity.ok().body(this.service.getMovieById(id));
     }

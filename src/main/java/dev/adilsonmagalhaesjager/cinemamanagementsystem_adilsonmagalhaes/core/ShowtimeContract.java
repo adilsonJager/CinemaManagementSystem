@@ -8,5 +8,4 @@ public interface ShowtimeContract {
 
     List<ShowtimeResponseDto> getShowTimes(int id);
 
-
 }

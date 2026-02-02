@@ -4,6 +4,7 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Roo
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.RoomEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.RoomName;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.RoomRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,9 +27,19 @@ class RoomServiceTest {
     @InjectMocks
     private RoomService service;
 
+    RoomEntity r1;
+    RoomEntity r2;
+    RoomEntity r3;
+
+    @BeforeEach
+    void setUp(){
+         r1 = new RoomEntity(1, "A", 100);
+         r2 = new RoomEntity(2, "B", 200);
+         r3 = new RoomEntity(3, "C", 300);
+    }
+
     @Test
     void ShouldBeGetRoomByNameExists() {
-
 
         RoomEntity roomFake = new RoomEntity(1, "A", 235);
         when (repository.findByName("A")).thenReturn(Optional.of(roomFake));
@@ -56,11 +67,7 @@ class RoomServiceTest {
     @DisplayName("Should get a list of rooms")
     void getAllRoom() {
 
-        RoomEntity r1 = new RoomEntity(1, "A", 100);
-        RoomEntity r2 = new RoomEntity(2, "B", 200);
-        RoomEntity r3 = new RoomEntity(3, "C", 300);
         when(repository.findAll()).thenReturn(List.of(r1, r2, r3));
-
         List<RoomResponseDto> result = service.getAllRoom();
 
         assertAll(

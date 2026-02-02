@@ -3,7 +3,6 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.servic
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ShowtimeContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.ShowtimeResponseDto;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ShowtimeEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.MovieRepository;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ShowtimeRepository;
 import org.springframework.stereotype.Service;
@@ -24,17 +23,23 @@ public class ShowtimeService implements ShowtimeContract {
 
 
     @Override
-    public List<ShowtimeResponseDto> getShowTimes(int id_movie) {
+    public List<ShowtimeResponseDto> getShowTimes(int idMovie) {
         LocalDateTime now = LocalDateTime.now();
 
-        if (!movieRepository.findById(id_movie).isPresent()){throw NotFoundException.movieNotFound("" + id_movie); }
+        if (movieRepository.findById(idMovie).isEmpty()){throw NotFoundException.movieNotFound("" + idMovie); }
 
+        return  showtimeRepository.findFutureShowtimes(now, idMovie).stream().map(
+                p -> new ShowtimeResponseDto(
+                        p.getId(),
+                        p.getDateTime()
+                )).toList();
+/*
         List<ShowtimeEntity> result =  showtimeRepository.findFutureShowtimes(now, id_movie);
-
         return  result.stream().map(
                 p -> new ShowtimeResponseDto(
                         p.getId(),
                         p.getDateTime()
                 )).toList();
+*/
     }
 }

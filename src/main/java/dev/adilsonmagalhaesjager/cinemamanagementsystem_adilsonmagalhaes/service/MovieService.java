@@ -25,16 +25,7 @@ public class MovieService implements MovieContract {
 
     @Override
     public List<MovieResponseDto> getAllMovies() {
-        List<MovieResponseDto> movies = repository.findAll().stream().map(
-                entity -> {
-                    MovieResponseDto dto = new MovieResponseDto(
-                            entity.getId(),
-                            entity.getTitle(),
-                            entity.getTime()
-                    );
-                    return dto;
-                }
-        ).toList();
-        return movies;
-    }
+        return repository.findAll().stream()
+                .map(entity -> new MovieResponseDto( entity.getId(),entity.getTitle(),entity.getTime())).toList();
+}
 }

@@ -22,4 +22,9 @@ public class NotFoundException extends  RuntimeException{
     public static NotFoundException showTimeNotExist(int s) {
         return new NotFoundException("ShowTime not exist! id: " + s);
     }
+
+    public static NotFoundException userNotExists(int s) {
+        return new NotFoundException("User not exist! id: " + s);
+    }
+
 }

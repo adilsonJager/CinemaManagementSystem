@@ -1,6 +1,6 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core;
 
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.RoomResponseDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.RoomResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.RoomName;
 
 import java.util.List;

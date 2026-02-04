@@ -1,6 +1,7 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository;
 
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.SeatEntity;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.interfaceJpa.ISeatProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,8 +23,10 @@ public interface SeatRepository extends JpaRepository<SeatEntity, Integer> {
                     END AS status
                        FROM seat seat
                 JOIN showtime showTime ON seat.room_id = showTime.room_id
-                LEFT JOIN reservation reservation ON seat.id = reservation.seat_id AND reservation.showtime_id = showTime.id
-                         WHERE showTime.id = :showtimeId
+                LEFT JOIN reservation reservation ON seat.id = reservation.seat_id 
+                AND reservation.showtime_id = showTime.id
+                AND reservation.status IN ('PENDING', 'CONFIRMED')
+                WHERE showTime.id = :showtimeId
             """, nativeQuery = true)
     List<ISeatProjection> findSeatsByShowTimeWithStatus(@Param("showtimeId") int showtimeId);
 }

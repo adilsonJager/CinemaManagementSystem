@@ -12,11 +12,15 @@ public class NotFoundException extends  RuntimeException{
     public NotFoundException(String s) {super(s);}
 
     public static NotFoundException movieNotFound (String movieId){
-        return new NotFoundException("movie: "+ movieId +" movie not exists" );
+        return new NotFoundException("movie: "+ movieId +" not exists" );
     }
 
     public static NotFoundException seatNotFound(int row, int col){
-        return new NotFoundException("Seat: Row-" + row + " Column: " + col);
+        return new NotFoundException("Seat: Row-" + row + " Column: " + col + " Not exists");
+    }
+
+    public static NotFoundException seatNotFound(){
+        return new NotFoundException("Seat Not exists");
     }
 
     public static NotFoundException showTimeNotExist(int s) {

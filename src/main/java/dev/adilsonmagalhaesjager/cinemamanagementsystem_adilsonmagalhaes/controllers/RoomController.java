@@ -2,7 +2,7 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.contro
 
 
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.RoomContract;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.RoomResponseDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.RoomResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.RoomName;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

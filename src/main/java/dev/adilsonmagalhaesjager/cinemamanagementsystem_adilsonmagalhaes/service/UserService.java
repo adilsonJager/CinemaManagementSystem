@@ -3,8 +3,8 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.servic
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ConflictRunTimeException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.UsersContract;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.UserRequestDto;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.UserResponseDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Request.UserRequestDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.UserResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.UserEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,6 @@ public class UserService implements UsersContract {
         UserEntity user = UserEntity.builder()
                 .name(dto.name())
                 .email(dto.email())
-                .password(dto.password())
                 .build();
 
         UserEntity saveUser = repository.save(user);

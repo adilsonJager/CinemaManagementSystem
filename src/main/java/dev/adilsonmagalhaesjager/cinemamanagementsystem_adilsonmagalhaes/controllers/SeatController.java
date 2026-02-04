@@ -1,8 +1,7 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.controllers;
 
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.SeatContract;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.SeatResponseDto;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service.SeatService;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.SeatResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

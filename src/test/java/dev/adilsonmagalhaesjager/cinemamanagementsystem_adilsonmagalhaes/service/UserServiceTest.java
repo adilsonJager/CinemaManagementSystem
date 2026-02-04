@@ -2,8 +2,8 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.servic
 
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ConflictRunTimeException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.UserRequestDto;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.UserResponseDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Request.UserRequestDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.UserResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.UserEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +35,8 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp(){
-        user1 = new UserEntity(1, "adilson", "teste1@gmail.com", "12345");
-        userReqDto = new UserRequestDto( "adilson", "teste1@gmail.com", "12345");
+        user1 = new UserEntity(1, "adilson", "teste1@gmail.com");
+        userReqDto = new UserRequestDto( "adilson", "teste1@gmail.com");
     }
 
     @Test

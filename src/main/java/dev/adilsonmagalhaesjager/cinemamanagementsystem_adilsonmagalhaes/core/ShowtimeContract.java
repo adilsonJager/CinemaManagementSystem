@@ -1,6 +1,6 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core;
 
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.ShowtimeResponseDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ShowtimeResponseDto;
 
 import java.util.List;
 

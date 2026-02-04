@@ -42,7 +42,7 @@ CREATE TABLE reservation(
     users_id INT NOT NULL,
     showtime_id INT NOT NULL,
     seat_id INT NOT NULL,
-    status VARCHAR(20) DEFAULT 'RESERVADO',
+    status VARCHAR(20) DEFAULT 'PADDING',
 
     FOREIGN KEY (users_id) REFERENCES users(id),
     FOREIGN KEY (showtime_id) REFERENCES showtime(id),

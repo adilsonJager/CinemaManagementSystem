@@ -19,7 +19,9 @@ public class MovieEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "time", nullable = false)
     private Integer time;
 
 }

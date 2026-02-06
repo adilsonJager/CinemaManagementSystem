@@ -25,8 +25,21 @@ public interface SeatRepository extends JpaRepository<SeatEntity, Integer> {
                 JOIN showtime showTime ON seat.room_id = showTime.room_id
                 LEFT JOIN reservation reservation ON seat.id = reservation.seat_id 
                 AND reservation.showtime_id = showTime.id
-                AND reservation.status IN ('PENDING', 'CONFIRMED')
+                AND (
+                    reservation.status = 'CONFIRMED'
+                    OR (reservation.status = 'PENDING' AND reservation.created_at >  NOW() - INTERVAL '4 minutes' )
+                    )
                 WHERE showTime.id = :showtimeId
             """, nativeQuery = true)
     List<ISeatProjection> findSeatsByShowTimeWithStatus(@Param("showtimeId") int showtimeId);
+
+
+    @Query(value = """
+    SELECT CASE WHEN COUNT(r.id) > 0 THEN false ELSE true END
+    FROM reservation r
+    WHERE r.showtime_id = :showtimeId
+      AND r.seat_id = :seatId
+      AND r.status IN ('PENDING', 'CONFIRMED')
+    """, nativeQuery = true)
+    boolean isSeatFree(@Param("showtimeId") int showtimeId, @Param("seatId") int seatId);
 }

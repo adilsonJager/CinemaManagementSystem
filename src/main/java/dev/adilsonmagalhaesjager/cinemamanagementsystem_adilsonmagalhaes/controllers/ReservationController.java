@@ -3,6 +3,8 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.contro
 
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ReservationContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Request.ReservationRequestDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Request.ReservationRequestUpdateSeatDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ReservationResponseCancelationDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ReservationResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,23 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<ReservationResponseDto> createAReservation(@Valid @RequestBody ReservationRequestDto dto){
-
         return ResponseEntity.ok().body(service.createReservation(dto));
+    }
 
+    @PutMapping("/updateSeat")
+    public ResponseEntity<ReservationResponseDto> updateSeat(@Valid @RequestBody ReservationRequestUpdateSeatDto request){
+        return ResponseEntity.ok().body(service.updateSeat(request));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReservationResponseDto> getReservation (@PathVariable int id){
+            return ResponseEntity.ok().body(service.getReservation(id));
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<ReservationResponseCancelationDto> cancelReservation(@PathVariable int id){
+
+        return ResponseEntity.ok().body(service.cancelReservetion(id));
     }
 
 }

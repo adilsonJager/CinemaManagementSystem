@@ -15,10 +15,6 @@ public class NotFoundException extends  RuntimeException{
         return new NotFoundException("movie: "+ movieId +" not exists" );
     }
 
-    public static NotFoundException seatNotFound(int row, int col){
-        return new NotFoundException("Seat: Row-" + row + " Column: " + col + " Not exists");
-    }
-
     public static NotFoundException seatNotFound(){
         return new NotFoundException("Seat Not exists");
     }
@@ -33,6 +29,10 @@ public class NotFoundException extends  RuntimeException{
 
     public static NotFoundException userEmailNotExists(String s) {
         return new NotFoundException("User not exist! Email: " + s);
+    }
+
+    public static NotFoundException reservationNotExits(int id) {
+        return new NotFoundException("Reservation not found: " + id);
     }
 
 }

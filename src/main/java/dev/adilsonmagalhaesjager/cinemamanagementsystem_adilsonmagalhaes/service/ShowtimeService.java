@@ -21,7 +21,6 @@ public class ShowtimeService implements ShowtimeContract {
         this.movieRepository = movieRepository;
     }
 
-
     @Override
     public List<ShowtimeResponseDto> getShowTimes(int idMovie) {
         LocalDateTime now = LocalDateTime.now();
@@ -33,13 +32,5 @@ public class ShowtimeService implements ShowtimeContract {
                         p.getId(),
                         p.getDateTime()
                 )).toList();
-/*
-        List<ShowtimeEntity> result =  showtimeRepository.findFutureShowtimes(now, id_movie);
-        return  result.stream().map(
-                p -> new ShowtimeResponseDto(
-                        p.getId(),
-                        p.getDateTime()
-                )).toList();
-*/
     }
 }

@@ -1,1 +1,0 @@
-ALTER TABLE reservation ALTER COLUMN users_id DROP NOT NULL ;

@@ -32,17 +32,16 @@ CREATE TABLE showtime (
 
 CREATE TABLE users (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    email VARCHAR(200) NOT NULL,
-    password VARCHAR(200) NOT NULl
+    name VARCHAR(150),
+    email VARCHAR(200)
 );
 
 CREATE TABLE reservation(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    users_id INT NOT NULL,
+    users_id INT,
     showtime_id INT NOT NULL,
     seat_id INT NOT NULL,
-    status VARCHAR(20) DEFAULT 'PADDING',
+    status VARCHAR(20) DEFAULT 'PENDING',
 
     FOREIGN KEY (users_id) REFERENCES users(id),
     FOREIGN KEY (showtime_id) REFERENCES showtime(id),

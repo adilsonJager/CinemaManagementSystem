@@ -17,11 +17,11 @@ public class SeatEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(name = "seat_column")
-    int seatColumn;
-    @Column(name = "seat_row")
-    int seatRow;
 
+    @Column(name = "seat_column", nullable = false)
+    int seatColumn;
+    @Column(name = "seat_row", nullable = false)
+    int seatRow;
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private RoomEntity room;

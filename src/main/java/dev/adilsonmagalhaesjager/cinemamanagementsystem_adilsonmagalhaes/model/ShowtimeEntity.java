@@ -30,7 +30,8 @@ public class ShowtimeEntity {
     @JoinColumn(name = "room_id", nullable = false)
     private RoomEntity room;
 
-    @Column(name = "date_time")
+
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
 }

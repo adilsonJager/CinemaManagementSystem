@@ -14,7 +14,7 @@ public class ReservationValidator {
 
     public void validateShowtime(ShowtimeEntity showtime){
         if (showtime.getDateTime().plusMinutes(10).isBefore(LocalDateTime.now())){
-            throw ReservationException.showtimeAlredyGone("");
+            throw ReservationException.showtimeAlredyGone();
         }
     }
 

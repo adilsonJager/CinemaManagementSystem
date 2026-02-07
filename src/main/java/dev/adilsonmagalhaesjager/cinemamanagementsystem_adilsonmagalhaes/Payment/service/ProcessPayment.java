@@ -50,12 +50,12 @@ public class ProcessPayment implements PaymentContract {
 
             } else  {
                 reservation.setStatus(ReservationStatus.PENDING);
-                reservationRepository.saveAndFlush(reservation);
+                reservationRepository.save(reservation);
 
                 throw ReservationException.paymentDenied();
             }
 
-            return reservationRepository.saveAndFlush(reservation);
+            return reservationRepository.save(reservation);
 
         } catch (Exception e ){
             reservation.setStatus(ReservationStatus.PENDING);

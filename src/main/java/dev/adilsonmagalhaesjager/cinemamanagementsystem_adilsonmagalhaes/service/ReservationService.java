@@ -1,5 +1,6 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;
 
+import aj.org.objectweb.asm.commons.TryCatchBlockSorter;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.core.PaymentContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ConflictRunTimeException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ReservationException;
@@ -25,6 +26,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -100,6 +102,7 @@ public class ReservationService implements ReservationContract {
     @Override
     public ReservationResponseDto payment(CheckoutRequestDto request){
 
+            updateEmailAndName(request.name(), request.userEmail(), request.reservationId());
             ReservationEntity reservation = paymentContract.execute(request);
             return reservationMapper.mappingShowtimeToDto(reservation);
     }
@@ -122,6 +125,19 @@ public class ReservationService implements ReservationContract {
 
         return ReservationEntity.builder()
                 .id(null).user(user).showtime(showtime).seat(seat).status(ReservationStatus.PENDING).build();
+
+    }
+
+    private void updateEmailAndName(String name, String email, int idShowtime){
+        ReservationEntity reservation = reservationRepository.findById(idShowtime).orElseThrow(() -> NotFoundException.reservationNotExits(idShowtime));
+        UserEntity user = userRepository.findByEmail(email).orElseGet(() -> new UserEntity(null, name, email));
+
+        if (user.getId() == null ){
+            user = userRepository.save(user);
+        }
+
+        reservation.setUser(user);
+        reservationRepository.save(reservation);
 
     }
 

@@ -3,7 +3,8 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.
 public enum ReservationStatus {
 
     PENDING ("PAYMENT PENDING"),
-    CONFIRMED ("PAYMENT CONFIRMED");
+    CONFIRMED ("PAYMENT CONFIRMED"),
+    PROCESSING("PROCESSING PAYMENT");
 
     private String status;
 

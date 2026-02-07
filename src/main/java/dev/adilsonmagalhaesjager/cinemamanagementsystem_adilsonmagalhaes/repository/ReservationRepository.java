@@ -16,7 +16,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     @Query(value = """
         DELETE FROM reservation
                 WHERE status = 'PENDING'
-                        AND created_at < NOW() - INTERVAL '4 minutes'
+                        AND created_at < NOW() - INTERVAL '6 minutes'
             """, nativeQuery = true)
     int cancelExpiredReservation();
 

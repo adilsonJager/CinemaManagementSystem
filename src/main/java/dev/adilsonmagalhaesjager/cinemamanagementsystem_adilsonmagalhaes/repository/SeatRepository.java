@@ -39,7 +39,7 @@ public interface SeatRepository extends JpaRepository<SeatEntity, Integer> {
     FROM reservation r
     WHERE r.showtime_id = :showtimeId
       AND r.seat_id = :seatId
-      AND r.status IN ('PENDING', 'CONFIRMED')
+      AND r.status IN ('PENDING', 'CONFIRMED', 'PROCESSING')
     """, nativeQuery = true)
     boolean isSeatFree(@Param("showtimeId") int showtimeId, @Param("seatId") int seatId);
 }

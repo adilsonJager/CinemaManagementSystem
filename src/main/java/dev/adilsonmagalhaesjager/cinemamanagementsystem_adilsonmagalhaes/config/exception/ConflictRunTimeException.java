@@ -10,8 +10,8 @@ public class ConflictRunTimeException extends RuntimeException {
     }
 
 
-    public static ConflictRunTimeException seatAlreadyInUserBySameUser(int row, int column){
-        return new ConflictRunTimeException("USER BURRO DO CARALHO VOCE JA TEM ESSE ASSENTO!  ");
+    public static ConflictRunTimeException seatAlreadyInUserBySameUser(){
+        return new ConflictRunTimeException("You are have theses seats!" );
     }
 
 
@@ -23,6 +23,10 @@ public class ConflictRunTimeException extends RuntimeException {
         return new ConflictRunTimeException("The seat is from another room and section!");
     }
 
+
+    public static ConflictRunTimeException reservationAlreadyPaied(){
+        return new ConflictRunTimeException("Payment already done!");
+    }
 
 
 

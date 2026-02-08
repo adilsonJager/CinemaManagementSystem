@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,12 +30,10 @@ public class ReservationEntity {
     @JoinColumn(name = "showtime_id", nullable = false)
     private ShowtimeEntity showtime;
 
-    @ManyToOne
-    @JoinColumn(name = "seat_id", nullable = false)
-    private SeatEntity seat;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ReservationStatus status;
 
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private List<ReservationItemEntity> items;
 }

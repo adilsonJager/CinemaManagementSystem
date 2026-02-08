@@ -20,12 +20,30 @@ public class MovieService implements MovieContract {
     @Override
     public MovieResponseDto getMovieById(int id) {
         MovieEntity movie = repository.findById(id).orElseThrow(() -> NotFoundException.movieNotFound("" + id));
-        return new MovieResponseDto(movie.getId(), movie.getTitle(), movie.getTime());
+        return mappingMovieFromEntityToDto(movie);
+    }
+
+    @Override
+    public MovieResponseDto getMovieByName(String name){
+        MovieEntity movie = repository.findByTitle(name).orElseThrow(() -> NotFoundException.movieNotFound(name));
+        return mappingMovieFromEntityToDto(movie);
     }
 
     @Override
     public List<MovieResponseDto> getAllMovies() {
         return repository.findAll().stream()
-                .map(entity -> new MovieResponseDto( entity.getId(),entity.getTitle(),entity.getTime())).toList();
+                .map(this::mappingMovieFromEntityToDto).toList();
 }
+
+    @Override
+    public void verifyMovieExistById(int idMovie) {
+        if(!repository.existsById(idMovie)){
+            throw NotFoundException.movieNotFound("" + idMovie);
+        }
+    }
+
+    private MovieResponseDto mappingMovieFromEntityToDto(MovieEntity e){
+        return MovieResponseDto.builder().id(e.getId()).title(e.getTitle()).time(e.getTime()).build();
+    }
+
 }

@@ -8,6 +8,8 @@ public interface MovieContract {
 
     MovieResponseDto getMovieById(int id);
 
-    List<MovieResponseDto> getAllMovies();
+    MovieResponseDto getMovieByName(String name);
 
+    List<MovieResponseDto> getAllMovies();
+    void verifyMovieExistById(int idMovie);
 }

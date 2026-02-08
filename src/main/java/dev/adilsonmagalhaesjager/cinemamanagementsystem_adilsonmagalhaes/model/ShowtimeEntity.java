@@ -2,16 +2,14 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity(name = "showtime")

@@ -48,6 +48,8 @@ public class UserService implements UsersContract {
         UserEntity saveUser = repository.save(user);
         return new UserResponseDto(saveUser.getId(), saveUser.getName(), saveUser.getEmail());
 
+    }
+
 
     }
-}
+

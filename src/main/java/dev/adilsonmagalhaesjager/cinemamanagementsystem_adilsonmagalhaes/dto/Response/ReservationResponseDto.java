@@ -1,14 +1,15 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response;
 import lombok.Builder;
 
+import java.util.List;
+
 @Builder
 public record ReservationResponseDto(
         int id,
         String movie,
         String time,
         String room,
-        int row,
-        int col,
+        List<String> seats,
         String status
 
 ) {

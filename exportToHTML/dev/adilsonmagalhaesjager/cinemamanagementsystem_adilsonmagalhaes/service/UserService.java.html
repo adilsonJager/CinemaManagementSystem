@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>UserService.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d17458;}
+.s1 { color: #e4e0e1;}
+</style>
+</head>
+<body bgcolor="#1e1a1b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+UserService.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;</span>
+
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ConflictRunTimeException;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.UsersContract;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Request.UserRequestDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.UserResponseDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.UserEntity;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.UserRepository;</span>
+<span class="s0">import </span><span class="s1">org.springframework.stereotype.Service;</span>
+
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">UserService </span><span class="s0">implements </span><span class="s1">UsersContract {</span>
+
+    <span class="s0">private final </span><span class="s1">UserRepository repository;</span>
+
+    <span class="s0">public </span><span class="s1">UserService(UserRepository repository) {</span>
+        <span class="s0">this</span><span class="s1">.repository = repository;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">UserResponseDto getUserById(</span><span class="s0">int </span><span class="s1">id) {</span>
+        <span class="s1">UserEntity user = repository.findById(id).orElseThrow(() -&gt; NotFoundException.userNotExists(id));</span>
+        <span class="s0">return new </span><span class="s1">UserResponseDto(user.getId(), user.getName(), user.getEmail());</span>
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">UserResponseDto getUserByEmail(String email){</span>
+        <span class="s0">return </span><span class="s1">repository.findByEmail(email).map(</span>
+                <span class="s1">e -&gt; </span><span class="s0">new </span><span class="s1">UserResponseDto(e.getId(), e.getName(), e.getEmail())</span>
+        <span class="s1">).orElseThrow(() -&gt; NotFoundException.userEmailNotExists(email));</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">UserResponseDto createUser(UserRequestDto dto) {</span>
+
+        <span class="s0">if </span><span class="s1">(repository.findByEmail(dto.email()).isPresent()){</span>
+            <span class="s0">throw </span><span class="s1">ConflictRunTimeException.emailAlredyExist(dto.email());</span>
+        <span class="s1">}</span>
+
+        <span class="s1">UserEntity user = UserEntity.builder()</span>
+                <span class="s1">.name(dto.name())</span>
+                <span class="s1">.email(dto.email())</span>
+                <span class="s1">.build();</span>
+
+        <span class="s1">UserEntity saveUser = repository.save(user);</span>
+        <span class="s0">return new </span><span class="s1">UserResponseDto(saveUser.getId(), saveUser.getName(), saveUser.getEmail());</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">Boolean userExist(String email){</span>
+        <span class="s0">return </span><span class="s1">repository.existsByEmail(email);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+</pre>
+</body>
+</html>

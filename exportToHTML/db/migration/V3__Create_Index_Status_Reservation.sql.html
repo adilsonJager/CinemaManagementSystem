@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>V3__Create_Index_Status_Reservation.sql</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e4e0e1;}
+.s1 { color: #d17458;}
+.s2 { color: #ddbe6d;}
+</style>
+</head>
+<body bgcolor="#1e1a1b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+V3__Create_Index_Status_Reservation.sql</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">CREATE INDEX </span><span class="s0">idx_reservation_pending </span><span class="s1">ON </span><span class="s0">reservation (created_at) </span><span class="s1">WHERE </span><span class="s0">status = </span><span class="s2">'PENDING'</span></pre>
+</body>
+</html>

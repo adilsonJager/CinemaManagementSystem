@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>ReservationStatus.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d17458;}
+.s1 { color: #e4e0e1;}
+.s2 { color: #ddbe6d;}
+</style>
+</head>
+<body bgcolor="#1e1a1b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ReservationStatus.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums;</span>
+
+<span class="s0">public enum </span><span class="s1">ReservationStatus {</span>
+
+    <span class="s1">PENDING (</span><span class="s2">&quot;PAYMENT PENDING&quot;</span><span class="s1">),</span>
+    <span class="s1">CONFIRMED (</span><span class="s2">&quot;PAYMENT CONFIRMED&quot;</span><span class="s1">),</span>
+    <span class="s1">PROCESSING(</span><span class="s2">&quot;PROCESSING PAYMENT&quot;</span><span class="s1">);</span>
+
+    <span class="s0">private </span><span class="s1">String status;</span>
+
+      <span class="s1">ReservationStatus(String status){</span>
+        <span class="s0">this</span><span class="s1">.status = status;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getStatus(){</span>
+          <span class="s0">return this</span><span class="s1">.status;</span>
+    <span class="s1">}</span>
+
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

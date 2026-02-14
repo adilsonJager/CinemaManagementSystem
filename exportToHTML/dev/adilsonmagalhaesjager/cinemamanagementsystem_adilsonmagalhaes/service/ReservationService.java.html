@@ -1,0 +1,174 @@
+<html>
+<head>
+<title>ReservationService.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d17458;}
+.s1 { color: #e4e0e1;}
+.s2 { color: #ddbe6d;}
+</style>
+</head>
+<body bgcolor="#1e1a1b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ReservationService.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;</span>
+
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.Dto.CheckoutRequestDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.core.PaymentContract;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ReservationException;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ReservationContract;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ReservationItemsContract;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ShowtimeContract;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.UsersContract;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Request.ReservationRequestDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ReservationResponseCancelationDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ReservationResponseDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.UserResponseDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ReservationEntity;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ReservationItemEntity;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ShowtimeEntity;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.UserEntity;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.ReservationStatus;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ReservationRepository;</span>
+<span class="s0">import </span><span class="s1">jakarta.transaction.Transactional;</span>
+<span class="s0">import </span><span class="s1">org.springframework.dao.DataIntegrityViolationException;</span>
+<span class="s0">import </span><span class="s1">org.springframework.stereotype.Service;</span>
+
+<span class="s0">import </span><span class="s1">java.time.LocalDateTime;</span>
+<span class="s0">import </span><span class="s1">java.util.List;</span>
+<span class="s0">import </span><span class="s1">java.util.Optional;</span>
+
+<span class="s1">@Service</span>
+<span class="s1">@Transactional</span>
+<span class="s0">public class </span><span class="s1">ReservationService </span><span class="s0">implements </span><span class="s1">ReservationContract {</span>
+
+    <span class="s0">private final </span><span class="s1">ReservationRepository reservationRepository;</span>
+    <span class="s0">private final </span><span class="s1">PaymentContract paymentService;</span>
+    <span class="s0">private final </span><span class="s1">UsersContract userService;</span>
+    <span class="s0">private final </span><span class="s1">ShowtimeContract showtimeService;</span>
+    <span class="s0">private final </span><span class="s1">ReservationItemsContract serviceItems;</span>
+
+
+
+
+    <span class="s0">public </span><span class="s1">ReservationService(ReservationRepository reservationRepository, PaymentContract paymentservice, UsersContract userService, ShowtimeContract showtimeService, ReservationItemsContract serviceItems) {</span>
+        <span class="s0">this</span><span class="s1">.reservationRepository = reservationRepository;</span>
+        <span class="s0">this</span><span class="s1">.paymentService = paymentservice;</span>
+        <span class="s0">this</span><span class="s1">.userService = userService;</span>
+        <span class="s0">this</span><span class="s1">.showtimeService = showtimeService;</span>
+        <span class="s0">this</span><span class="s1">.serviceItems = serviceItems;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">ReservationResponseDto createReservation(ReservationRequestDto request) {</span>
+
+        <span class="s0">try</span><span class="s1">{</span>
+
+            <span class="s1">ReservationEntity reservation = reservationRepository.save(creatReservationEntityMapping(request));</span>
+            <span class="s0">if </span><span class="s1">(reservation.getId() == </span><span class="s0">null</span><span class="s1">){</span><span class="s0">throw </span><span class="s1">ReservationException.failToSaveOnDB();}</span>
+            <span class="s1">List&lt;ReservationItemEntity&gt; items = serviceItems.saveItems(request.seats(), reservation, reservation.getShowtime());</span>
+            <span class="s1">reservation.setItems(items);</span>
+
+            <span class="s1">ReservationEntity savedReservation = reservationRepository.save(reservation);</span>
+
+            <span class="s0">return </span><span class="s1">mappingShowtimeToDto(savedReservation);</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(DataIntegrityViolationException e){</span>
+            <span class="s0">throw </span><span class="s1">ReservationException.failToSaveOnDB((e.getMessage()));</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">ReservationResponseDto getReservation(</span><span class="s0">int </span><span class="s1">id){</span>
+        <span class="s1">ReservationEntity reservation = reservationRepository.findById(id).orElseThrow(() -&gt; NotFoundException.reservationNotExits(id));</span>
+        <span class="s0">return </span><span class="s1">mappingShowtimeToDto(reservation);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">ReservationResponseCancelationDto cancelReservetion(</span><span class="s0">int </span><span class="s1">id) {</span>
+        <span class="s1">ReservationEntity reservation = reservationRepository.findById(id).orElseThrow(() -&gt; NotFoundException.reservationNotExits(id));</span>
+        <span class="s1">ReservationResponseCancelationDto cancel = ReservationResponseCancelationDto.builder().id(id).status(</span><span class="s2">&quot;SUCCESSFULLY_CANCELED&quot;</span><span class="s1">).dateTime(LocalDateTime.now()).build();</span>
+        <span class="s1">reservationRepository.delete(reservation);</span>
+        <span class="s0">return </span><span class="s1">cancel;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">ReservationResponseDto payment(CheckoutRequestDto request){</span>
+        <span class="s1">ReservationEntity reservation = paymentService.execute(request);</span>
+
+        <span class="s0">if </span><span class="s1">(userService.userExist(request.userEmail()) &amp;&amp; reservation.getStatus().equals(ReservationStatus.CONFIRMED)){</span>
+            <span class="s1">UserResponseDto user = userService.getUserByEmail(request.userEmail());</span>
+            <span class="s1">reservation.setUser(</span>
+                    <span class="s1">UserEntity.builder().id(user.id()).name(user.name()).email(user.email()).build()</span>
+            <span class="s1">);</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">reservation.setUser(</span>
+                    <span class="s1">UserEntity.builder().name(request.name()).email(request.userEmail()).build()</span>
+            <span class="s1">);</span>
+        <span class="s1">}</span>
+
+        <span class="s1">reservationRepository.save(reservation);</span>
+
+        <span class="s0">return </span><span class="s1">mappingShowtimeToDto(reservation);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">ReservationEntity creatReservationEntityMapping(ReservationRequestDto request){</span>
+
+        <span class="s1">UserResponseDto userDto = </span><span class="s0">null</span><span class="s1">;</span>
+        <span class="s0">if </span><span class="s1">(request.email_user() != </span><span class="s0">null </span><span class="s1">&amp;&amp; !request.email_user().isBlank()){</span>
+            <span class="s1">userDto = userService.getUserByEmail(request.email_user());</span>
+        <span class="s1">}</span>
+
+
+        <span class="s1">ShowtimeEntity showtime = showtimeService.getShowtimeEntityById(request.id_showtime());</span>
+        <span class="s0">if </span><span class="s1">(showtime.getDateTime().plusMinutes(</span><span class="s2">10</span><span class="s1">).isBefore(LocalDateTime.now())){ </span><span class="s0">throw </span><span class="s1">ReservationException.showtimeAlredyGone();}</span>
+
+
+        <span class="s0">return </span><span class="s1">ReservationEntity.builder()</span>
+                <span class="s1">.id(</span><span class="s0">null</span><span class="s1">)</span>
+                <span class="s1">.user(mappingUserEntityToDto(userDto).orElse(</span><span class="s0">null</span><span class="s1">))</span>
+                <span class="s1">.showtime(showtime)</span>
+                <span class="s1">.status(ReservationStatus.PENDING)</span>
+                <span class="s1">.build();</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">Optional&lt;UserEntity&gt; mappingUserEntityToDto(UserResponseDto dto){</span>
+        <span class="s0">if </span><span class="s1">(dto == </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s0">return </span><span class="s1">Optional.empty();</span>
+        <span class="s1">}</span>
+        <span class="s0">return  </span><span class="s1">Optional.of(UserEntity.builder().id(dto.id()).name(dto.name()).email(dto.email()).build());</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">private </span><span class="s1">ReservationResponseDto mappingShowtimeToDto(ReservationEntity reservation){</span>
+
+        <span class="s1">List&lt;String&gt; seats = (reservation.getItems() == </span><span class="s0">null</span><span class="s1">)</span>
+                <span class="s1">? List.of()</span>
+                <span class="s1">: reservation.getItems().stream()</span>
+                <span class="s1">.map(item -&gt; </span><span class="s2">&quot;Fila: &quot; </span><span class="s1">+ item.getSeat().getSeatRow() + </span><span class="s2">&quot; Col: &quot; </span><span class="s1">+ item.getSeat().getSeatColumn())</span>
+                <span class="s1">.toList();</span>
+
+        <span class="s0">return </span><span class="s1">ReservationResponseDto.builder()</span>
+                <span class="s1">.id(reservation.getId())</span>
+                <span class="s1">.movie(reservation.getShowtime().getMovie().getTitle())</span>
+                <span class="s1">.time(reservation.getShowtime().getDateTime().toString())</span>
+                <span class="s1">.room(reservation.getShowtime().getRoom().getName())</span>
+                <span class="s1">.seats(seats)</span>
+                <span class="s1">.status(reservation.getStatus().getStatus())</span>
+                <span class="s1">.build();</span>
+    <span class="s1">}</span>
+
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

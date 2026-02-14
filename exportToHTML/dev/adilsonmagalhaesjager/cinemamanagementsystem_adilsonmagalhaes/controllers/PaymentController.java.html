@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>PaymentController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d17458;}
+.s1 { color: #e4e0e1;}
+.s2 { color: #ddbe6d;}
+</style>
+</head>
+<body bgcolor="#1e1a1b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PaymentController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.controllers;</span>
+
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.Dto.CheckoutRequestDto;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ReservationContract;</span>
+<span class="s0">import </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ReservationResponseDto;</span>
+<span class="s0">import </span><span class="s1">jakarta.validation.Valid;</span>
+<span class="s0">import </span><span class="s1">org.springframework.http.ResponseEntity;</span>
+<span class="s0">import </span><span class="s1">org.springframework.web.bind.annotation.PostMapping;</span>
+<span class="s0">import </span><span class="s1">org.springframework.web.bind.annotation.RequestBody;</span>
+<span class="s0">import </span><span class="s1">org.springframework.web.bind.annotation.RequestMapping;</span>
+<span class="s0">import </span><span class="s1">org.springframework.web.bind.annotation.RestController;</span>
+
+<span class="s1">@RestController</span>
+<span class="s1">@RequestMapping(</span><span class="s2">&quot;/reservations&quot;</span><span class="s1">)</span>
+<span class="s0">public class </span><span class="s1">PaymentController {</span>
+    <span class="s0">private final </span><span class="s1">ReservationContract service;</span>
+
+
+    <span class="s0">public </span><span class="s1">PaymentController(ReservationContract service) {</span>
+        <span class="s0">this</span><span class="s1">.service = service;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@PostMapping(</span><span class="s2">&quot;/checkout&quot;</span><span class="s1">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity&lt;ReservationResponseDto&gt; checkout(@RequestBody @Valid CheckoutRequestDto request){</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity.ok().body(</span><span class="s0">this</span><span class="s1">.service.payment(request));</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

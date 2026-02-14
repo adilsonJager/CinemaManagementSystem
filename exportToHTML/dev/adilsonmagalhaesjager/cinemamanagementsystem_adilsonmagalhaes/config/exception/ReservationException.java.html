@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>ReservationException.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d17458;}
+.s1 { color: #e4e0e1;}
+.s2 { color: #ddbe6d;}
+</style>
+</head>
+<body bgcolor="#1e1a1b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ReservationException.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception;</span>
+
+<span class="s0">public class </span><span class="s1">ReservationException </span><span class="s0">extends </span><span class="s1">RuntimeException{</span>
+
+    <span class="s0">public </span><span class="s1">ReservationException(String s){</span><span class="s0">super</span><span class="s1">(s);}</span>
+
+    <span class="s0">public static </span><span class="s1">ReservationException showtimeAlredyGone(){</span>
+        <span class="s0">return new </span><span class="s1">ReservationException(</span><span class="s2">&quot;Showtime is old!&quot;</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">ReservationException failToSaveOnDB (){</span>
+        <span class="s0">return new </span><span class="s1">ReservationException(</span><span class="s2">&quot;Something wrong were while trying save register.&quot;</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">ReservationException failToSaveOnDB (String msg){</span>
+        <span class="s0">return new </span><span class="s1">ReservationException(msg);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">ReservationException internalErrorWhileProcessPayment (){</span>
+        <span class="s0">return new </span><span class="s1">ReservationException(</span><span class="s2">&quot;Something wrong while payment&quot;</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">ReservationException paymentDenied (){</span>
+        <span class="s0">return new </span><span class="s1">ReservationException(</span><span class="s2">&quot;The payment was refused by the operator.&quot;</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

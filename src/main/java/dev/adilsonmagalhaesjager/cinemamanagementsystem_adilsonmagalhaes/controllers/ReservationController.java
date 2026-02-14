@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/reservation")
+@RequestMapping("/reservations")
 @CrossOrigin(origins = "http://localhost:8081")
 public class ReservationController {
 

@@ -88,8 +88,7 @@ public class ReservationService implements ReservationContract {
                     UserEntity.builder().id(user.id()).name(user.name()).email(user.email()).build()
             );
         } else {
-
-            UserResponseDto response =   userService.createUser(UserRequestDto.builder().name(request.name()).email(request.userEmail()).build());
+            UserResponseDto response = userService.createUser(UserRequestDto.builder().name(request.name()).email(request.userEmail()).build());
             reservation.setUser(
                     UserEntity.builder().id(response.id()).name(response.name()).email(response.email()).build()
             );

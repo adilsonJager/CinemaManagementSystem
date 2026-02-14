@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/movie")
 @CrossOrigin(origins = "http://localhost:8081")
 public class MoviesController {
 

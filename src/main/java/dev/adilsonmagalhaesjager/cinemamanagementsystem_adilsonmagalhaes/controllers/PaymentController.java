@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "cineshow-hub.vercel.app")
 public class PaymentController {
     private final ReservationContract service;
 

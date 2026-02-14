@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/seats")
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "cineshow-hub.vercel.app")
 public class SeatController {
 
     private final SeatContract service;

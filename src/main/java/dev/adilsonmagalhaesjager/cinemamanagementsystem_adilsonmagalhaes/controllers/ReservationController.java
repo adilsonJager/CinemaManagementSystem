@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/reservations")
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "cineshow-hub.vercel.app")
 public class ReservationController {
 
     private final ReservationContract service;

@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/showtimes")
-@CrossOrigin(origins = "cineshow-hub.vercel.app")
+
 public class ControllerShowtime {
 
     private final ShowtimeContract service;

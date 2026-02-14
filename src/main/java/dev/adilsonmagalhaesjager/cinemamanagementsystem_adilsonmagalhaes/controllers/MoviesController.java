@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
-@CrossOrigin(origins = "cineshow-hub.vercel.app")
 public class MoviesController {
 
 

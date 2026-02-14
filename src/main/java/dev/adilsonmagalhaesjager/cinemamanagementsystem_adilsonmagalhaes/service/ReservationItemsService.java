@@ -6,7 +6,6 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.Se
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ReservationEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ReservationItemEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.SeatEntity;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ShowtimeEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ReservationItemRespository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -28,13 +27,13 @@ public class ReservationItemsService implements ReservationItemsContract {
 
 
     @Override
-    public List<ReservationItemEntity> saveItems(List<Integer> seatIds, ReservationEntity reservation, ShowtimeEntity showtime) {
+    public List<ReservationItemEntity> saveItems(List<Integer> seatIds, ReservationEntity reservation) {
 
         List<SeatEntity> seat = seatservice.getSelectionSeats(seatIds);
 
 
         for (SeatEntity s : seat){
-            if (!s.getRoom().getId().equals(showtime.getRoom().getId()) ){
+            if (!s.getRoom().getId().equals(reservation.getShowtime().getRoom().getId()) ){
                 throw ConflictRunTimeException.seatNotEqualFromShowTime();
             }
         }
@@ -45,7 +44,7 @@ public class ReservationItemsService implements ReservationItemsContract {
                                 .id(null)
                                 .reservation(reservation)
                                 .seat(s)
-                                .showtime(showtime)
+                                .showtime(reservation.getShowtime())
                                 .build())
                 .collect(Collectors.toList());
 

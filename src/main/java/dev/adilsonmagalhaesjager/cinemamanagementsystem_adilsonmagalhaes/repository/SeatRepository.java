@@ -17,11 +17,14 @@ public interface SeatRepository extends JpaRepository<SeatEntity, Integer> {
                 seat.id AS id,
                 seat.seat_row AS "seatRow",
                 seat.seat_column AS "seatColumn",
+                stype.name AS "seatType",
+                stype.price AS "seatValue",
                 CASE
                     WHEN r.id IS NOT NULL THEN 'Not_Available'
                     ELSE 'Available'
                     END AS status
                 FROM seat seat
+                JOIN seattype stype ON seat.type_id = stype.id
                 JOIN showtime st ON seat.room_id = st.room_id
                 LEFT JOIN reservation_item ri ON seat.id = ri.seat_id AND ri.showtime_id = st.id
                 LEFT JOIN reservation r ON ri.reservation_id = r.id

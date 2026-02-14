@@ -1,50 +1,59 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;
+
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.SeatContract;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.SeatEntity;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.interfaceJpa.ISeatProjection;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ShowtimeContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.SeatResponseDto;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.StatusSeat;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.SeatEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.SeatRepository;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ShowtimeRepository;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.interfaceJpa.ISeatProjection;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
 public class SeatService implements SeatContract {
 
     private final SeatRepository seatRepository;
-    private final ShowtimeRepository showtimeRepository;
+    private final ShowtimeContract serviceShowTime;
 
 
 
-    public SeatService(SeatRepository seatRepository, ShowtimeRepository showtimeRepository) {
+    public SeatService(SeatRepository seatRepository, ShowtimeContract serviceShowTime) {
         this.seatRepository = seatRepository;
-        this.showtimeRepository = showtimeRepository;
+        this.serviceShowTime = serviceShowTime;
     }
 
 
     @Override
     public List<SeatResponseDto> getAllSeatFromShowtime(int id_showtime) {
 
-        if (!showtimeRepository.existsById(id_showtime)){
-            throw NotFoundException.showTimeNotExist( id_showtime);
-        }
+        serviceShowTime.existsById(id_showtime);
+
         List<ISeatProjection> seatFromDB = seatRepository.findSeatsByShowTimeWithStatus(id_showtime);
-        return seatFromDB.stream().map(p -> new SeatResponseDto(p.getId(), p.getSeatRow(), p.getSeatColumn(), StatusSeat.valueOf(p.getStatus()))).toList();
+        return seatFromDB.stream().map(p -> SeatResponseDto.builder().id(p.getId()).seatRow(p.getSeatRow()).seatColumn(p.getSeatColumn()).status(p.getStatus()).type(p.getSeatType()).value(p.getSeatValue()).build()).toList();
     }
 
+    @Override
+    public SeatResponseDto getSeatById(int id){
+        SeatEntity result = seatRepository.findById(id).orElseThrow( NotFoundException::seatNotFound);
+        return SeatResponseDto.builder().id(result.getId()).Room(result.getRoom().getName()).seatRow(result.getSeatRow()).seatColumn(result.getSeatColumn()).type(result.getType().getName()).value(result.getType().getPrice().doubleValue()).build();
+    }
 
     @Override
     public List<SeatEntity> getSelectionSeats(List<Integer> list){
         List<SeatEntity> result = seatRepository.findAllById(list);
+
         if (result.size() != list.size()){
-            throw NotFoundException.seatNotFound();
+            List<Integer> idsNaoEncontrados = list.stream()
+                    .filter(id -> result.stream().noneMatch(seat -> seat.getId().equals(id)))
+                    .toList();
+            throw NotFoundException.seatNotFound( " " + idsNaoEncontrados);
         }
 
         return result;
     }
-
 }

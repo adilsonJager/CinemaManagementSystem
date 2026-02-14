@@ -1,10 +1,7 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 @Entity(name = "Seat")
 @Table(name = "seat")
+@Builder
 public class SeatEntity {
 
     @Id
@@ -25,5 +23,9 @@ public class SeatEntity {
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private RoomEntity room;
+
+    @ManyToOne
+    @JoinColumn(name = "type_id", nullable = false)
+    private SeatTypeEntity type;
 
 }

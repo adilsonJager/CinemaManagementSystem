@@ -2,10 +2,7 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Data
@@ -14,6 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 @Table(name = "movie")
 @Entity(name = "movie")
+@Builder
 public class MovieEntity {
 
     @Id

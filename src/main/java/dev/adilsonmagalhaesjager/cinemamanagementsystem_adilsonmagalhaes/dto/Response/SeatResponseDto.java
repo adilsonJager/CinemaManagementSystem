@@ -1,11 +1,17 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response;
 
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.StatusSeat;
 
+import lombok.Builder;
+
+
+@Builder
 public record SeatResponseDto(
         int id,
         int seatRow,
         int seatColumn,
-        StatusSeat StatusSeat
+        String Room,
+        String status,
+        String type,
+        Double value
 ) {
 }

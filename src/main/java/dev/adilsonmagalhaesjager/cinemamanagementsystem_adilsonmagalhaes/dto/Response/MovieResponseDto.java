@@ -6,5 +6,9 @@ import lombok.Builder;
 public record MovieResponseDto (
         int id,
         String title,
-        int time
+        int duration,
+        String synopsis,
+        String genre,
+        String classification,
+        String poster
 ){}

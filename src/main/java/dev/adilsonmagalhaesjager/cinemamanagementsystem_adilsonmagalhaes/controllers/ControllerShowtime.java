@@ -3,15 +3,14 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.Sh
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ShowtimeResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/showtimes")
+@CrossOrigin(origins = "http://localhost:8081")
 public class ControllerShowtime {
 
     private final ShowtimeContract service;
@@ -20,10 +19,9 @@ public class ControllerShowtime {
         this.service = service;
     }
 
-
     @RequestMapping("{id}")
-    public ResponseEntity<List<ShowtimeResponseDto>> getShowTime(@Valid @PathVariable int id){
-        return ResponseEntity.ok().body(service.getShowTimes(id));
+    public ResponseEntity<List<ShowtimeResponseDto>> getShowTime( @PathVariable int id, @RequestParam(name = "date") String dateStr){
+        return ResponseEntity.ok().body(service.getShowTimes(id, dateStr));
     }
 
 }

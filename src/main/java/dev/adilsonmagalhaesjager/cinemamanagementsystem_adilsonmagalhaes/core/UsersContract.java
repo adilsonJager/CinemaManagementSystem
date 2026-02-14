@@ -8,4 +8,5 @@ public interface UsersContract {
     UserResponseDto createUser(UserRequestDto dto);
     UserResponseDto getUserByEmail(String email);
 
+    Boolean userExist(String email);
 }

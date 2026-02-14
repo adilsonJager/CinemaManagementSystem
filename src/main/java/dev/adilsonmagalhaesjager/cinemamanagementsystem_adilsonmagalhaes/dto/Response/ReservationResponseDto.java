@@ -1,6 +1,7 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response;
 import lombok.Builder;
 
+
 import java.util.List;
 
 @Builder

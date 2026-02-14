@@ -8,9 +8,12 @@ import java.util.List;
 
 public interface ShowtimeContract {
 
-    List<ShowtimeResponseDto> getShowTimes(@NotNull int id);
+
+    List<ShowtimeResponseDto> getShowTimes(int idMovie, String date);
 
     ShowtimeResponseDto getShowtimeById(@NotNull Integer integer);
 
     ShowtimeEntity getShowtimeEntityById(int id);
+
+    void existsById(int idShowtime);
 }

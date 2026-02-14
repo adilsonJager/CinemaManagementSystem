@@ -39,7 +39,7 @@ class MovieServiceTest {
         //Assert
         assertNotNull(result);
         assertEquals("Inception", result.title());
-        assertEquals(154, result.time());
+        assertEquals(154, result.duration());
         verify(repository, times(1)).findById(id);
     }
 
@@ -69,7 +69,7 @@ class MovieServiceTest {
         assertAll(
                 () ->  assertEquals(3, result.size()),
                 () -> assertEquals("movie 3", result.get(2).title()),
-                () ->  assertEquals(120, result.get(1).time())
+                () ->  assertEquals(120, result.get(1).duration())
         );
         verify(repository, times(1)).findAll();
     }

@@ -50,6 +50,10 @@ public class UserService implements UsersContract {
 
     }
 
+    @Override
+    public Boolean userExist(String email){
+        return repository.existsByEmail(email);
+    }
 
     }
 

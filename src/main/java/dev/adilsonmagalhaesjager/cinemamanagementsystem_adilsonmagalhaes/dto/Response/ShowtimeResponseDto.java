@@ -1,8 +1,6 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.MovieEntity;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.RoomName;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

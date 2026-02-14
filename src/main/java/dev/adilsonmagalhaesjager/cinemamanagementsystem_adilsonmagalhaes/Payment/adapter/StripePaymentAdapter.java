@@ -40,6 +40,7 @@ public class StripePaymentAdapter implements PaymentGateway {
                     .build();
 
             PaymentIntent intent = PaymentIntent.create(params, options);
+
             return "succeeded".equals(intent.getStatus());
         } catch (StripeException e) {
             return false;

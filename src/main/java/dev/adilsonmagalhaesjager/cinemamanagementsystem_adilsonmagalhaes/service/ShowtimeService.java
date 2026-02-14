@@ -7,6 +7,7 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Res
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ShowtimeEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ShowtimeRepository;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,10 +24,9 @@ public class ShowtimeService implements ShowtimeContract {
     }
 
     @Override
-    public List<ShowtimeResponseDto> getShowTimes(int idMovie) {
-        LocalDateTime now = LocalDateTime.now();
+    public List<ShowtimeResponseDto> getShowTimes(int idMovie, String date) {
         movieService.verifyMovieExistById(idMovie);
-        return  showtimeRepository.findFutureShowtimes(now, idMovie).stream().map(
+        return  showtimeRepository.findAvailableShowtimes(LocalDateTime.now(), LocalDateTime.parse(date),  idMovie).stream().map(
                 this::mappingEntityToDto
                 ).toList();
     }
@@ -40,11 +40,18 @@ public class ShowtimeService implements ShowtimeContract {
     @Override
     public ShowtimeEntity getShowtimeEntityById(int id){
         return showtimeRepository.findById(id).orElseThrow(() ->NotFoundException.showTimeNotExist(id));
+    }
 
+    @Override
+    public void existsById(int idShowtime) {
+          if (!showtimeRepository.existsById(idShowtime)){
+              throw  NotFoundException.showTimeNotExist(idShowtime);
+          }
     }
 
     private ShowtimeResponseDto mappingEntityToDto(ShowtimeEntity entity){
         return ShowtimeResponseDto.builder().id(entity.getId()).room(entity.getRoom().getName()).movie(entity.getMovie().getTitle()).dateTime(entity.getDateTime()).build();
     }
+
 
 }

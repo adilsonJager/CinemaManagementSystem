@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ReservationItemsContract {
 
-    List<ReservationItemEntity> saveItems(List<Integer> seatIds, ReservationEntity reservation, ShowtimeEntity showtime);
+    List<ReservationItemEntity> saveItems(List<Integer> seatIds, ReservationEntity reservation);
 }

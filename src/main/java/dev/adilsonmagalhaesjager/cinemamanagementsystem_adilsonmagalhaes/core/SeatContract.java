@@ -8,5 +8,8 @@ import java.util.List;
 public interface SeatContract {
 
     List<SeatResponseDto> getAllSeatFromShowtime(int id);
+
+    SeatResponseDto getSeatById(int id);
+
     List<SeatEntity> getSelectionSeats(List<Integer> list);
 }

@@ -1,68 +1,48 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.service;
 
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.Dto.CheckoutRequestDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.adapter.PaymentGateway;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.core.PaymentContract;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ConflictRunTimeException;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ReservationException;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.Payment.Dto.CheckoutRequestDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ReservationEntity;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.ReservationStatus;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ReservationRepository;
-import jakarta.transaction.Transactional;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service.ReservationStateManager;
 import org.springframework.stereotype.Component;
 
-@Transactional
 @Component
 public class ProcessPayment implements PaymentContract {
 
     private final PaymentGateway paymentGateway;
-    private final ReservationRepository reservationRepository;
+    private final ReservationStateManager reservationStateManager;
 
-    public ProcessPayment(PaymentGateway paymentGateway, ReservationRepository reservationRepository) {
+    public ProcessPayment(PaymentGateway paymentGateway, ReservationStateManager reservationStateManager) {
         this.paymentGateway = paymentGateway;
-        this.reservationRepository = reservationRepository;
+        this.reservationStateManager = reservationStateManager;
     }
 
 
     @Override
     public ReservationEntity execute(CheckoutRequestDto request) {
-        ReservationEntity reservation = reservationRepository.findById(request.reservationId())
-                .orElseThrow(() -> NotFoundException.reservationNotExits(request.reservationId()));
 
-        if (reservation.getStatus().equals(ReservationStatus.CONFIRMED)){
-            throw ConflictRunTimeException.reservationAlreadyPaied();
-        }
-
-        reservation.setStatus(ReservationStatus.PROCESSING);
-        reservationRepository.saveAndFlush(reservation);
+        ReservationEntity reservation = reservationStateManager.getAndLockForPayment(request.reservationId());
 
         try{
-            Long amountInCents = 3000L;
             boolean success = paymentGateway.process(
-                    amountInCents,
+                    3000L,
                     request.paymentMethodId(),
                     request.userEmail()
             );
+            reservationStateManager.finalizePayment(reservation, success);
 
-            if (success){
-                reservation.setStatus(ReservationStatus.CONFIRMED);
-
-            } else  {
-                reservation.setStatus(ReservationStatus.PENDING);
-                reservationRepository.save(reservation);
-
+            if (!success){
                 throw ReservationException.paymentDenied();
             }
 
-            return reservationRepository.save(reservation);
-
         } catch (Exception e ){
-            reservation.setStatus(ReservationStatus.PENDING);
-            reservationRepository.save(reservation);
+            reservationStateManager.handlePaymentError(reservation);
             throw ReservationException.internalErrorWhileProcessPayment();
         }
 
+        return reservation;
 
     }
 }

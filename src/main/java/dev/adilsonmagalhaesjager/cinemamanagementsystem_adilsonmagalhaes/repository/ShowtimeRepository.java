@@ -12,8 +12,18 @@ import java.util.List;
 @Repository
 public interface ShowtimeRepository extends JpaRepository<ShowtimeEntity, Integer> {
 
-    @Query("SELECT s FROM showtime s WHERE movie.id = :movie AND s.dateTime > :now ORDER BY s.dateTime ASC")
-    List<ShowtimeEntity> findFutureShowtimes (@Param("now")LocalDateTime now, @Param("movie")Integer id);
+    @Query("""
+    SELECT s FROM showtime s 
+    WHERE s.movie.id = :movie 
+    AND s.dateTime >= :now 
+    AND CAST(s.dateTime AS date) = CAST(:selectedDate AS date) 
+    ORDER BY s.dateTime ASC
+""")
+    List<ShowtimeEntity> findAvailableShowtimes(
+            @Param("now") LocalDateTime now,
+            @Param("selectedDate") LocalDateTime selectedDate,
+            @Param("movie") Integer id
+    );
 
 }
 

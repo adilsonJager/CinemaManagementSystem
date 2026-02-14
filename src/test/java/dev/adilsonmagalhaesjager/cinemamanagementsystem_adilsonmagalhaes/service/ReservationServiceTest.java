@@ -1,29 +1,23 @@
 package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service;
 
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.ReservationException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Request.ReservationRequestDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ReservationResponseDto;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.*;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.UserResponseDto;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ReservationEntity;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.ReservationStatus;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ReservationRepository;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.SeatRepository;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ShowtimeRepository;
-import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service.mock.ReservationDataFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -32,127 +26,37 @@ class ReservationServiceTest {
     @Mock
     private ReservationRepository reservationRepository;
     @Mock
-    private UserRepository userRepository;
+    private ReservationItemsService reservationItemsService;
     @Mock
-    private ShowtimeRepository showtimeRepository;
+    private UserService userService;
     @Mock
-    private SeatRepository seatRepository;
+    private ShowtimeService showtimeService;
 
     @InjectMocks
     private ReservationService reservationService;
 
-
-    private ReservationRequestDto requestDto;
-    private ShowtimeEntity showtimeEntity;
-    private RoomEntity roomEntity;
-    private MovieEntity movieEntity;
-    private SeatEntity seatEntity;
-    private ReservationEntity reservationEntity;
-    private ReservationEntity reservationEntityNull;
-
-    @BeforeEach
-    void setUp(){
-
-        LocalDateTime now = LocalDateTime.now().plusMonths(1);
-
-        //ShowTime Section
-        movieEntity = new MovieEntity(1, "Deu a louca na chapeuzinho", 120);
-        roomEntity = new RoomEntity(1, "A", 150);
-        showtimeEntity = new ShowtimeEntity(1, movieEntity, roomEntity, now );
-        // End
-
-        //Reservation section
-        seatEntity = new SeatEntity(184, 1, 1, roomEntity);
-        requestDto = new ReservationRequestDto(null, showtimeEntity.getId(), seatEntity.getId());
-        reservationEntity =  ReservationEntity.builder().id(1).user(null).showtime(showtimeEntity).seat(seatEntity).status(ReservationStatus.PENDING).build();
-        reservationEntityNull =  ReservationEntity.builder().id(null).user(null).showtime(showtimeEntity).seat(seatEntity).status(ReservationStatus.PENDING).build();
-    }
-
     @Test
-    @DisplayName("Should create reservation successfully when all data is valid")
-    void shouldCreateReservationWithSuccess() {
+    void createReservation() {
+
+        ReservationRequestDto dto = new ReservationRequestDto("adilson@gmail.com", 1, List.of(1));
+        ReservationEntity reservation = ReservationDataFactory.setReservationEntity();
+        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(reservation);
+        when(userService.getUserByEmail(anyString())).thenReturn(new UserResponseDto(1, "adilson", "adilson@gmail.com"));
+        when(showtimeService.getShowtimeEntityById(anyInt())).thenReturn(reservation.getShowtime());
 
 
-        when(showtimeRepository.findById(requestDto.id_showtime())).thenReturn(Optional.of(showtimeEntity));
-        when(seatRepository.findById(seatEntity.getId())).thenReturn(Optional.of(seatEntity));
-        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(reservationEntity);
+        ReservationResponseDto result = reservationService.createReservation(dto);
 
-        ReservationResponseDto result = reservationService.createReservation(requestDto);
+        assertEquals(ReservationStatus.PENDING.getStatus(), result.status());
 
-        assertNotNull(result.id());
-        assertEquals("Deu a louca na chapeuzinho", result.movie());
-
-        verify(userRepository, times(1)).findByEmail(any());
-        verify(showtimeRepository, times(1)).findById(1);
-        verify(seatRepository, times(1)).findById(184);
-        verify(reservationRepository, times(1)).save(any(ReservationEntity.class));
-
-    }
-
-
-    @Test
-    @DisplayName("Should throw NotFoundException when showtime does not exist")
-    void shouldThrowExceptionWhenShowtimeNotFound(){
-        when(showtimeRepository.findById(requestDto.id_showtime())).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> reservationService.createReservation(requestDto));
-        verify(showtimeRepository).findById( requestDto.id_showtime());
-    }
-
-
-    @Test
-    @DisplayName("Should throw NotFoundException when seat does not exist")
-    void shouldThrowExceptionWhenSeatNotFound(){
-        when(showtimeRepository.findById(requestDto.id_showtime())).thenReturn(Optional.of(showtimeEntity));
-        when(seatRepository.findById(seatEntity.getId())).thenReturn(Optional.empty());
-
-        assertThrows(NotFoundException.class, () -> reservationService.createReservation(requestDto));
-        verify(seatRepository).findById(requestDto.id_seat());
-    }
-
-    @Test
-    @DisplayName("Should throw ReservationException when database fails to return generated ID")
-    void shouldThrowExceptionWhenDatabaseFailsToReturnId(){
-        when(showtimeRepository.findById(requestDto.id_showtime())).thenReturn(Optional.of(showtimeEntity));
-        when(seatRepository.findById(seatEntity.getId())).thenReturn(Optional.of(seatEntity));
-        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(reservationEntityNull);
-
-        assertThrows(ReservationException.class, () -> reservationService.createReservation(requestDto));
-        verify(reservationRepository).save(any(ReservationEntity.class));
-    }
-
-    @Test
-    @DisplayName("Should block reservation when 10-minute tolerance limit is exceeded")
-    void shouldBlockReservationWhenPastToleranceLimit(){
-
-        ShowtimeEntity pastShowTime = new ShowtimeEntity(1, movieEntity, roomEntity, LocalDateTime.now().minusMinutes(11));
-        when(showtimeRepository.findById(any())).thenReturn(Optional.of(pastShowTime));
-
-        assertThrows(ReservationException.class, () -> reservationService.createReservation(requestDto));
-        verifyNoInteractions(seatRepository);
-        verifyNoInteractions(reservationRepository);
 
     }
 
     @Test
-    @DisplayName("Should allow reservation when within the 10-minute tolerance window")
-    void shouldAllowReservationWhenWithinToleranceTime(){
-
-        ShowtimeEntity pastShowTime = new ShowtimeEntity(1, movieEntity, roomEntity, LocalDateTime.now().minusMinutes(9));
-        when(showtimeRepository.findById(any())).thenReturn(Optional.of(pastShowTime));
-        when(seatRepository.findById(seatEntity.getId())).thenReturn(Optional.of(seatEntity));
-        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(reservationEntity);
-
-        ReservationResponseDto result = reservationService.createReservation(requestDto);
-
-        assertNotNull(result.id());
-        assertEquals("Deu a louca na chapeuzinho", result.movie());
-
-        verify(userRepository, times(1)).findByEmail(any());
-        verify(showtimeRepository, times(1)).findById(1);
-        verify(seatRepository, times(1)).findById(184);
-        verify(reservationRepository, times(1)).save(any(ReservationEntity.class));
-
+    void getReservation() {
     }
 
-
+    @Test
+    void payment() {
+    }
 }

@@ -19,6 +19,10 @@ public class NotFoundException extends  RuntimeException{
         return new NotFoundException("Seat Not exists");
     }
 
+    public static NotFoundException seatNotFound(String id){
+        return new NotFoundException("Seat Not exists");
+    }
+
     public static NotFoundException showTimeNotExist(int s) {
         return new NotFoundException("ShowTime not exist! id: " + s);
     }

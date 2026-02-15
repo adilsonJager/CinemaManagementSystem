@@ -30,7 +30,7 @@ class MovieServiceTest {
     void ShouldBeGetMovieWhenIdExists() {
         //Arrange
         int id = 1;
-        MovieEntity movieFake = new MovieEntity(id, "Inception",154);
+        MovieEntity movieFake = new MovieEntity(id, "Inception",154, "Filme muito bom", "terror", 18, "sem url");
         when (repository.findById(id)).thenReturn(Optional.of(movieFake));
 
         //Action
@@ -58,9 +58,9 @@ class MovieServiceTest {
     @Test
     @DisplayName("Should return a list of movies")
     void getAllMovies() {
-        MovieEntity m1 = new MovieEntity(1, "movie 1", 110);
-        MovieEntity m2 = new MovieEntity(2, "movie 2", 120);
-        MovieEntity m3 = new MovieEntity(3, "movie 3", 130);
+        MovieEntity m1 = new MovieEntity(1, "movie 1", 110, "Filme muito bom", "terror", 18, "sem url");
+        MovieEntity m2 = new MovieEntity(2, "movie 2", 120, "Filme muito bom", "terror", 18, "sem url");
+        MovieEntity m3 = new MovieEntity(3, "movie 3", 130, "Filme muito bom", "terror", 18, "sem url");
         when(repository.findAll()).thenReturn(List.of(m1, m2, m3));
         List<MovieResponseDto> result = service.getAllMovies();
 

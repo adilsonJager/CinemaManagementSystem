@@ -19,4 +19,5 @@ public class RoomEntity {
     private String name;
     @Column(name = "capacity", nullable = false)
     private int capacity;
+
 }

@@ -22,4 +22,16 @@ public class MovieEntity {
     @Column(name = "time", nullable = false)
     private Integer time;
 
+    @Column(name = "synopsis", nullable = false)
+    String synopsis;
+
+    @Column(name = "genre", nullable = false)
+    String genre;
+
+    @Column(name = "classification", nullable = false)
+    Integer classification;
+
+    @Column(name = "poster_url", nullable = false)
+    String posterUrl;
+
 }

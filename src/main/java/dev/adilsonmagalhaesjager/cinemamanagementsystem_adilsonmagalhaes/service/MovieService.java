@@ -43,7 +43,7 @@ public class MovieService implements MovieContract {
     }
 
     private MovieResponseDto mappingMovieFromEntityToDto(MovieEntity e){
-        return MovieResponseDto.builder().id(e.getId()).title(e.getTitle()).duration(e.getTime()).build();
+        return MovieResponseDto.builder().id(e.getId()).title(e.getTitle()).duration(e.getTime()).synopsis(e.getSynopsis()).genre(e.getGenre()).classification(e.getClassification()).poster(e.getPosterUrl()).build();
     }
 
 }

@@ -9,6 +9,6 @@ public record MovieResponseDto (
         int duration,
         String synopsis,
         String genre,
-        String classification,
+        int classification,
         String poster
 ){}

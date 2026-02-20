@@ -11,6 +11,7 @@ public record ShowtimeResponseDto(
     String room,
     String movie,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    LocalDateTime dateTime
+    LocalDateTime dateTime,
+    Boolean getIsFull
 ) {
 }

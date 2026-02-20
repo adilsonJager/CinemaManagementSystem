@@ -2,6 +2,7 @@ package dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.servic
 
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.config.exception.NotFoundException;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.MovieContract;
+import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.SeatContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.core.ShowtimeContract;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.dto.Response.ShowtimeResponseDto;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.ShowtimeEntity;
@@ -26,8 +27,10 @@ public class ShowtimeService implements ShowtimeContract {
     @Override
     public List<ShowtimeResponseDto> getShowTimes(int idMovie, String date) {
         movieService.verifyMovieExistById(idMovie);
-        return  showtimeRepository.findAvailableShowtimes(LocalDateTime.now(), LocalDateTime.parse(date),  idMovie).stream().map(
-                this::mappingEntityToDto
+        return  showtimeRepository.findAvailableShowtimesWithStatus(LocalDateTime.now(), LocalDateTime.parse(date),  idMovie).stream().map(
+                r -> new ShowtimeResponseDto(
+                        r.getId(), r.getRoomName(), r.getMovieTitle(), r.getDateTime(), r.getIsFull()
+                )
                 ).toList();
     }
 

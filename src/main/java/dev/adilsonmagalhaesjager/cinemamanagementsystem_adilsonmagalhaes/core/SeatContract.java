@@ -12,4 +12,6 @@ public interface SeatContract {
     SeatResponseDto getSeatById(int id);
 
     List<SeatEntity> getSelectionSeats(List<Integer> list);
+
+    Boolean seatAvailable(int showtimeId);
 }

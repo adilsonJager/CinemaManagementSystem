@@ -12,17 +12,37 @@ import java.util.List;
 @Repository
 public interface ShowtimeRepository extends JpaRepository<ShowtimeEntity, Integer> {
 
-    @Query("""
-    SELECT s FROM showtime s 
-    WHERE s.movie.id = :movie 
-    AND s.dateTime >= :now 
-    AND CAST(s.dateTime AS date) = CAST(:selectedDate AS date) 
-    ORDER BY s.dateTime ASC
-""")
-    List<ShowtimeEntity> findAvailableShowtimes(
+    @Query(value = """
+        SELECT 
+            st.id AS id,
+            rm.name AS roomName,
+            mv.title AS movieTitle,
+            st.date_time AS dateTime,
+            CASE 
+                WHEN (
+                    SELECT COUNT(ri.id)
+                    FROM reservation_item ri
+                    JOIN reservation r ON ri.reservation_id = r.id
+                    WHERE ri.showtime_id = st.id
+                    AND (
+                        r.status IN ('CONFIRMED', 'PROCESSING')
+                        OR (r.status = 'PENDING' AND r.created_at > NOW() - INTERVAL '4 minutes')
+                    )
+                ) >= rm.capacity THEN true 
+                ELSE false 
+            END AS isFull
+        FROM showtime st
+        JOIN room rm ON st.room_id = rm.id
+        JOIN movie mv ON st.movie_id = mv.id
+        WHERE st.movie_id = :movie
+        AND st.date_time >= :now
+        AND CAST(st.date_time AS date) = CAST(:selectedDate AS date)
+        ORDER BY st.date_time ASC
+        """, nativeQuery = true)
+    List<IShowtimeWithStatusProjection> findAvailableShowtimesWithStatus(
             @Param("now") LocalDateTime now,
             @Param("selectedDate") LocalDateTime selectedDate,
-            @Param("movie") Integer id
+            @Param("movie") Integer movie
     );
 
 }

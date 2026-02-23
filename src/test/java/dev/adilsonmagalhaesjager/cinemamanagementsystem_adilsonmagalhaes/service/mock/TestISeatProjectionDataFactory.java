@@ -17,6 +17,7 @@ public class TestISeatProjectionDataFactory {
             String status,
             String type,
             Double value
+
     ) {
         ISeatProjection projection = mock(ISeatProjection.class);
 

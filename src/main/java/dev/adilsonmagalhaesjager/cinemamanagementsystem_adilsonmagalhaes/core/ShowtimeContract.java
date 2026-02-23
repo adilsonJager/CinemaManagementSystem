@@ -11,7 +11,8 @@ public interface ShowtimeContract {
 
     List<ShowtimeResponseDto> getShowTimes(int idMovie, String date);
 
-    ShowtimeResponseDto getShowtimeById(@NotNull Integer integer);
+
+    ShowtimeResponseDto getShowtimeById(Integer id);
 
     ShowtimeEntity getShowtimeEntityById(int id);
 

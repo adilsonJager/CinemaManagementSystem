@@ -10,6 +10,8 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.reposit
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -53,11 +55,5 @@ public class SeatService implements SeatContract {
         }
 
         return result;
-    }
-
-
-    @Override
-    public Boolean seatAvailable(int showtimeId){
-        return seatRepository.isSessionFull(showtimeId);
     }
 }

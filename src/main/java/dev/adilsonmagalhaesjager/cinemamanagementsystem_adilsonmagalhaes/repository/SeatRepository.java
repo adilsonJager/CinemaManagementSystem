@@ -50,23 +50,4 @@ public interface SeatRepository extends JpaRepository<SeatEntity, Integer> {
                 )
     """, nativeQuery = true)
     boolean isSeatFree(@Param("showtimeId") int showtimeId, @Param("seatId") int seatId);
-
-    @Query(value = """
-    SELECT CASE 
-        WHEN COUNT(ri.id) >= s.room_id THEN true 
-        ELSE false 
-    END
-    FROM reservation_item ri
-    JOIN reservation r ON ri.reservation_id = r.id
-    JOIN showtime s ON ri.showtime_id = s.id
-    JOIN room ro ON s.room_id = ro.id
-    WHERE ri.showtime_id = :showtimeId
-        AND (r.status IN ('CONFIRMED', 'PROCESSING')
-            OR (r.status = 'PENDING' AND r.created_at > NOW() - INTERVAL '4 minutes'))
-    GROUP BY ro.capacity
-    """, nativeQuery = true)
-    boolean isSessionFull(@Param("showtimeId") int showtimeId);
-
 }
-
-

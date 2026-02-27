@@ -7,6 +7,7 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.R
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.enums.ReservationStatus;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.repository.ReservationRepository;
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service.mock.ReservationDataFactory;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class ReservationServiceTest {
+class ReservationAuthUserDetailsServiceTest {
 
     @Mock
     private ReservationRepository reservationRepository;
@@ -31,7 +32,6 @@ class ReservationServiceTest {
     private UserService userService;
     @Mock
     private ShowtimeService showtimeService;
-
     @InjectMocks
     private ReservationService reservationService;
 
@@ -43,20 +43,8 @@ class ReservationServiceTest {
         when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(reservation);
         when(userService.getUserByEmail(anyString())).thenReturn(new UserResponseDto(1, "adilson", "adilson@gmail.com"));
         when(showtimeService.getShowtimeEntityById(anyInt())).thenReturn(reservation.getShowtime());
-
-
         ReservationResponseDto result = reservationService.createReservation(dto);
-
         assertEquals(ReservationStatus.PENDING.getStatus(), result.status());
-
-
     }
 
-    @Test
-    void getReservation() {
-    }
-
-    @Test
-    void payment() {
-    }
 }

@@ -31,10 +31,10 @@ public class ReservationController {
             return ResponseEntity.ok().body(service.getReservation(id));
     }
 
-    @PutMapping("/cancel/{id}")
-    public ResponseEntity<ReservationResponseCancelationDto> cancelReservation(@PathVariable int id){
-
-        return ResponseEntity.ok().body(service.cancelReservetion(id));
-    }
+//    @PutMapping("/cancel/{id}")
+//    public ResponseEntity<ReservationResponseCancelationDto> cancelReservation(@PathVariable int id){
+//
+//        return ResponseEntity.ok().body(service.cancelReservetion(id));
+//    }
 
 }

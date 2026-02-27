@@ -8,6 +8,8 @@ import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.model.R
 import dev.adilsonmagalhaesjager.cinemamanagementsystem_adilsonmagalhaes.service.ReservationStateManager;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class ProcessPayment implements PaymentContract {
 
@@ -26,8 +28,15 @@ public class ProcessPayment implements PaymentContract {
         ReservationEntity reservation = reservationStateManager.getAndLockForPayment(request.reservationId());
 
         try{
+
+            long amount = reservation.getItems().stream()
+                    .map(item -> item.getSeat().getType().getPrice())
+                    .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    .multiply(BigDecimal.valueOf(100))
+                    .longValue();
+
             boolean success = paymentGateway.process(
-                    3000L,
+                    amount,
                     request.paymentMethodId(),
                     request.userEmail()
             );

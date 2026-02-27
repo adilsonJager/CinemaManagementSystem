@@ -29,9 +29,16 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        //Admin only
                         .requestMatchers(HttpMethod.POST, "/internal/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/internal/register").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+
+                        //FrontEnd
+                        .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/showtimes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/reservations/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/payment/**").permitAll()
+                        .anyRequest().denyAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

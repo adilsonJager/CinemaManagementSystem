@@ -245,6 +245,3 @@ npm run dev
 
 ---
 
-## 👤 Author
-
-Made by **[your name]** — [LinkedIn](https://linkedin.com/in/your-profile) · [GitHub](https://github.com/your-username)

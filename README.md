@@ -2,7 +2,7 @@
 
 A full-stack cinema management platform built with **Spring Boot** + **React**, featuring JWT authentication, Stripe payment integration, real-time seat reservation, and an admin panel for managing movies, rooms, and showtimes.
 
-> 🚀 **Live Demo:** [your-url-here]
+> 🚀 **Live Demo:** [https://cineshow-hub.vercel.app]
 
 ---
 

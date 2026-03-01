@@ -42,7 +42,6 @@ A full-stack cinema management platform built with **Spring Boot** + **React**, 
 
 **Frontend**
 - React
-- Axios
 
 ---
 
